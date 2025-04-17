@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  backend:
+    build: ./Server
+    container_name: tick-tack-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./Server:/usr/src/app
+      - /usr/src/app/node_modules
+
+  frontend:
+    build: ./Client
+    container_name: tick-tack-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://localhost:3001/api/time
